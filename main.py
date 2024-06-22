@@ -1,4 +1,5 @@
 import pygame
+import time
 
 pygame.init()
 
@@ -54,3 +55,25 @@ class Character:
 
 		self.updateRect()
 
+player = Character(250, 350, 50)
+
+while True:
+	screen.fill((255,255,255))
+
+	player.jump()
+	player.draw(screen)
+
+	events = pygame.event.get()
+
+	for event in events:
+		if event.type == pygame.QUIT:  # Allow user to quit
+			raise SystemExit
+		if event.type == pygame.KEYDOWN:
+			if event.key == pygame.K_UP or event.key == pygame.K_SPACE:  # jump
+				player.jumpCount = 10
+			elif event.key == pygame.K_LEFT: # move left
+				player.move(1)
+			elif event.key == pygame.K_RIGHT: # move right
+				player.move(-1)
+	
+	pygame.display.flip() # Refresh frame
