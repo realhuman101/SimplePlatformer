@@ -9,6 +9,8 @@ OBSTACLES = [((350, 200), (400, 300))]
 
 class Character:
 	def __init__(self, x, y, size, obstacles: list[int]) -> None:
+		self.size = size
+
 		self.beginX = x-(size/2)
 		self.beginY = y-(size/2)
 
@@ -21,7 +23,7 @@ class Character:
 		self.jumpCount = 0
 
 	def updateRect(self):
-		self.rect = pygame.Rect((self.beginX, self.endX), (self.beginY, self.endY))
+		self.rect = pygame.Rect((self.beginX, self.beginY), (self.size, self.size))
 		return self.rect
 	
 	def draw(self, surface):
@@ -37,7 +39,7 @@ class Character:
 	
 	def checkUnder(self) -> bool:
 		allUnder = []
-		for obstacle in obstacle:
+		for obstacle in self.obstacles:
 			# Basically check if this obj is under by checking X coords to see if X is on platform then Y to see if y is on platform
 			allUnder.append(obstacle[0][0] >= self.endX >= obstacle[1][0] and \
 				obstacle[0][0] >= self.beginX >= obstacle[1][0] and \
@@ -57,11 +59,11 @@ class Character:
 
 def drawObstacles(surface, obstacles, color = (0,0,0)):
 	for obstacle in obstacles:
-		obstRect = pygame.Rect((obstacle[0][0], obstacle[0][1]), (obstacle[0][1], obstacle[1][1]))
+		obstRect = pygame.Rect((obstacle[0][0], obstacle[0][1]), (obstacle[1][0]-obstacle[0][0], obstacle[1][1]-obstacle[0][1]))
 
 		pygame.draw.rect(surface, color, obstRect)
 
-player = Character(250, 350, 50)
+player = Character(250, 350, 50, OBSTACLES)
 
 while True:
 	screen.fill((255,255,255))
@@ -80,8 +82,8 @@ while True:
 			if event.key == pygame.K_UP or event.key == pygame.K_SPACE:  # jump
 				player.jumpCount = 10
 			elif event.key == pygame.K_LEFT: # move left
-				player.move(1)
-			elif event.key == pygame.K_RIGHT: # move right
 				player.move(-1)
+			elif event.key == pygame.K_RIGHT: # move right
+				player.move(1)
 	
 	pygame.display.flip() # Refresh frame
