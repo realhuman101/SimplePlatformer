@@ -55,6 +55,12 @@ class Character:
 
 		self.updateRect()
 
+def drawObstacles(surface, obstacles, color = (0,0,0)):
+	for obstacle in obstacles:
+		obstRect = pygame.Rect((obstacle[0][0], obstacle[0][1]), (obstacle[0][1], obstacle[1][1]))
+
+		pygame.draw.rect(surface, color, obstRect)
+
 player = Character(250, 350, 50)
 
 while True:
@@ -62,6 +68,8 @@ while True:
 
 	player.jump()
 	player.draw(screen)
+
+	drawObstacles(screen, OBSTACLES)
 
 	events = pygame.event.get()
 
