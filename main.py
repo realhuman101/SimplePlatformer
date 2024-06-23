@@ -50,11 +50,22 @@ class Character:
 	def jump(self, amt = 5):
 		if self.checkUnder(): #Making sure not double jumping - basically chck if on platform
 			if self.jumpCount > 0:
-				self.beginY += amt
-				self.beginX += amt
+				if self.beginY > 0:
+					self.beginY -= amt
+				if self.endX > 0:
+					self.endY -= amt
 
 				self.jumpCount -= 1
 
+		self.updateRect()
+	
+	def gravity(self, amt = 5):
+		if not self.checkUnder(): # NOthing underneath
+			if self.endY != 500:
+				self.endY += amt
+			if self.beginY != 500:
+				self.beginY += amt
+		
 		self.updateRect()
 
 def drawObstacles(surface, obstacles, color = (0,0,0)):
@@ -67,6 +78,8 @@ player = Character(250, 350, 50, OBSTACLES)
 
 while True:
 	screen.fill((255,255,255))
+
+	player.gravity()
 
 	player.jump()
 	player.draw(screen)
