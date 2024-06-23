@@ -7,10 +7,15 @@ screen = pygame.display.set_mode((1000, 500))
 
 OBSTACLES = [
     ((200, 375), (350, 410)),
-    ((0, 100), (50, 120)), 
-    ((400, 300), (450, 330)), 
+    ((0, 100), (50, 120)),
+    ((400, 300), (450, 330)),
     ((100, 200), (150, 230)),
-    ((600, 400), (650, 430)) 
+    ((600, 400), (650, 430)),
+    ((800, 100), (900, 130)),
+    ((500, 350), (550, 500)),
+    ((50, 450), (300, 470)),
+    ((750, 50), (780, 300)),
+    ((250, 50), (400, 80))
 ]
 
 class Character:
@@ -36,7 +41,7 @@ class Character:
 		self.updateRect()
 		pygame.draw.rect(surface, (255, 0, 0), self.rect)
 
-	def move(self, dir: int, amt = 0.5):
+	def move(self, dir: int, amt = 0.25):
 		# Note that dir is either the integer 1, meaning right, or -1, meaning left
 		self.beginX = self.beginX + dir*amt
 		self.endX = self.endX + dir*amt
@@ -53,7 +58,7 @@ class Character:
 		
 		return any(allUnder) # Returns true if any of the obstacles are under the player
 	
-	def jump(self, amt = 50):
+	def jump(self, amt = 100):
 		if self.jumpCount > 0:
 			if self.checkUnder(): #Making sure not double jumping - basically chck if on platform
 				if self.beginY > 0:
@@ -65,7 +70,7 @@ class Character:
 
 		self.updateRect()
 	
-	def gravity(self, amt = 0.5):
+	def gravity(self, amt = 0.1):
 		if not self.checkUnder(): # NOthing underneath
 			if self.endY != 500:
 				self.endY += amt
