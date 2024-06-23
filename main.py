@@ -5,7 +5,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((500, 500))
 
-OBSTACLES = [((350+50, 200+50), (550, 300)), ((0, 100), (50, 120))]
+OBSTACLES = [((200, 375), (350, 410)), ((0, 100), (50, 120))]
 
 class Character:
 	def __init__(self, x, y, size, obstacles: list[int]) -> None:
@@ -41,9 +41,10 @@ class Character:
 		allUnder = []
 		for obstacle in self.obstacles:
 			# Basically check if this obj is under by checking X coords to see if X is on platform then Y to see if y is on platform
-			allUnder.append(obstacle[0][0] >= self.endX >= obstacle[1][0] and \
-				obstacle[0][0] >= self.beginX >= obstacle[1][0] and \
-				obstacle[0][1] >= self.endY >= obstacle[1][1])
+			allUnder.append(obstacle[0][0] <= self.endX <= obstacle[1][0] and \
+				obstacle[0][0] <= self.beginX <= obstacle[1][0] and \
+				obstacle[0][1] <= self.endY <= obstacle[1][1])
+			print(allUnder[-1], obstacle)
 		
 		return any(allUnder) # Returns true if any of the obstacles are under the player
 	
@@ -70,7 +71,9 @@ class Character:
 
 def drawObstacles(surface, obstacles, color = (0,0,0)):
 	for obstacle in obstacles:
-		obstRect = pygame.Rect((obstacle[0][0], obstacle[0][1]), (obstacle[1][0]-obstacle[0][0], obstacle[1][1]-obstacle[0][1]))
+		obstRect = pygame.Rect((obstacle[0][0], obstacle[0][1]), \
+						 		(obstacle[1][0]-obstacle[0][0], \
+								obstacle[1][1]-obstacle[0][1]))
 
 		pygame.draw.rect(surface, color, obstRect)
 
@@ -79,7 +82,7 @@ player = Character(250, 350, 50, OBSTACLES)
 while True:
 	screen.fill((255,255,255))
 
-	player.gravity()
+	# player.gravity()
 
 	player.jump()
 	player.draw(screen)
