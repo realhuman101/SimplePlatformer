@@ -118,6 +118,8 @@ while True:
 				movements['left'] = True
 			elif event.key == pygame.K_RIGHT: # move right
 				movements['right'] = True
+			elif event.key == pygame.K_r: # If r key pressed
+				player = Character(250, 350, 50, OBSTACLES)
 		
 		# check if key up
 		if event.type == pygame.KEYUP:
