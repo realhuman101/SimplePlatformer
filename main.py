@@ -44,19 +44,18 @@ class Character:
 			allUnder.append(obstacle[0][0] <= self.endX <= obstacle[1][0] and \
 				obstacle[0][0] <= self.beginX <= obstacle[1][0] and \
 				obstacle[0][1] <= self.endY <= obstacle[1][1])
-			print(allUnder[-1], obstacle)
 		
 		return any(allUnder) # Returns true if any of the obstacles are under the player
 	
 	def jump(self, amt = 5):
-		if self.checkUnder(): #Making sure not double jumping - basically chck if on platform
-			if self.jumpCount > 0:
+		if self.jumpCount > 0:
+			if self.checkUnder(): #Making sure not double jumping - basically chck if on platform
 				if self.beginY > 0:
-					self.beginY -= amt
-				if self.endX > 0:
+					self.beginY -= amt # - = up, + = down
+				if self.endY > 0:
 					self.endY -= amt
 
-				self.jumpCount -= 1
+			self.jumpCount -= 1
 
 		self.updateRect()
 	
@@ -80,6 +79,12 @@ def drawObstacles(surface, obstacles, color = (0,0,0)):
 player = Character(250, 350, 50, OBSTACLES)
 
 while True:
+	print(player.beginX, player.beginY)
+	print(player.endX, player.endY)
+	print(player.checkUnder())
+	print(player.jumpCount)
+	print()
+
 	screen.fill((255,255,255))
 
 	# player.gravity()
@@ -96,7 +101,8 @@ while True:
 			raise SystemExit
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_UP or event.key == pygame.K_SPACE:  # jump
-				player.jumpCount = 10
+				if player.checkUnder():
+					player.jumpCount = 50
 			elif event.key == pygame.K_LEFT: # move left
 				player.move(-1)
 			elif event.key == pygame.K_RIGHT: # move right
