@@ -5,7 +5,13 @@ pygame.init()
 
 screen = pygame.display.set_mode((1000, 500))
 
-OBSTACLES = [((200, 375), (350, 410)), ((0, 100), (50, 120))]
+OBSTACLES = [
+    ((200, 375), (350, 410)),
+    ((0, 100), (50, 120)), 
+    ((400, 300), (450, 330)), 
+    ((100, 200), (150, 230)),
+    ((600, 400), (650, 430)) 
+]
 
 class Character:
 	def __init__(self, x, y, size, obstacles: list[int]) -> None:
